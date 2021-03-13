@@ -9,12 +9,14 @@ from keras.callbacks import Callback
 from matplotlib import pyplot
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler
+import pickle
 sc = StandardScaler()
 le = LabelEncoder()
 
 # load model
-model = load_model('MyModel1000Final.h5')
+model = load_model('SavedModel.h5')
 model.summary()
+print(model.weights)
 testing_data = pd.read_csv('./Test.csv')
 #print(testing_data)
 
@@ -23,17 +25,15 @@ X = testing_data.iloc[:, required_cols].values
 Y = testing_data.iloc[:,-1].values
 
 
-#Y = le.fit_transform(Y)
-'''cnt = set()
 for i in range(1,len(Y)):
     if Y[i] != 0 and Y[i] != 1:
         Y[i] = 1;
-'''
-    
-#X = sc.fit_transform(X)
-#X = sc.transform(X)
+
+sc = pickle.load(open('./scaler.pkl','rb'));
+X = sc.transform(X)
 
 Y_pred = model.predict(X)
+print(Y_pred)
 Y_pred = (Y_pred > 0.5)
 
 from sklearn.metrics import confusion_matrix, accuracy_score

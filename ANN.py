@@ -3,14 +3,13 @@
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from keras.optimizers import SGD
+from keras.optimizers import SGD,Adam
 from keras.models import Sequential,load_model
 from matplotlib import pyplot
 from sklearn.metrics import confusion_matrix, accuracy_score
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import LabelEncoder
-
+from sklearn.preprocessing import StandardScaler,LabelEncoder
+import pickle
 # Part 1 - Data Preprocessing
 
 # Importing the dataset
@@ -37,25 +36,28 @@ sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
 X_test = sc.transform(X_test)
 
+pickle.dump(sc, open('./scaler.pkl','wb'))
+
+
 # Part 2 - Building the ANN
 
 # Initializing the ANN
 ann = tf.keras.models.Sequential()
 
-ann.add(tf.keras.layers.Dense(units = 15, activation='relu'))
-for i in range(1,4):
-    ann.add(tf.keras.layers.Dense(units=15, activation='relu'))
-    
+ann.add(tf.keras.layers.Dense(units = 11, activation='relu'))
+for i in range(0,4):
+    ann.add(tf.keras.layers.Dense(units=11, activation='relu'))
+ 
 ann.add(tf.keras.layers.Dense(units=1, activation='sigmoid'))
 
 # Part 3 - Training the ANN
 # Compiling the ANN
-opt = SGD(lr = 0.005) #setting up learning rate
+opt = Adam() 
 ann.compile(optimizer = opt, loss = 'binary_crossentropy', metrics=['accuracy','mse'])
 
 # Training the ANN on the Training set
-history = ann.fit(X_train, Y_train, batch_size = 32, epochs = 5)
-
+history = ann.fit(X_train, Y_train, batch_size = 32, epochs = 150)
+weights = ann.get_weights()
 #Graph for mse
 pyplot.plot(history.history['mse'])
 pyplot.title('Training Performance')
