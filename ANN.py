@@ -56,7 +56,7 @@ opt = Adam()
 ann.compile(optimizer = opt, loss = 'binary_crossentropy', metrics=['accuracy','mse'])
 
 # Training the ANN on the Training set
-history = ann.fit(X_train, Y_train, batch_size = 32, epochs = 150)
+history = ann.fit(X_train, Y_train, batch_size = 32, epochs = 100)
 weights = ann.get_weights()
 #Graph for mse
 pyplot.plot(history.history['mse'])

@@ -14,10 +14,10 @@ sc = StandardScaler()
 le = LabelEncoder()
 
 # load model
-model = load_model('SavedModel.h5')
+model = load_model('./SavedModel.h5')
 model.summary()
-print(model.weights)
-testing_data = pd.read_csv('./Test.csv')
+#print(model.weights)
+testing_data = pd.read_csv('attack3.csv')
 #print(testing_data)
 
 required_cols = [0,1,2,3,4,5,6,7,8,9,10]
@@ -25,10 +25,9 @@ X = testing_data.iloc[:, required_cols].values
 Y = testing_data.iloc[:,-1].values
 
 
-for i in range(1,len(Y)):
-    if Y[i] != 0 and Y[i] != 1:
+for i in range(0,len(Y)):
         Y[i] = 1;
-
+print(Y);
 sc = pickle.load(open('./scaler.pkl','rb'));
 X = sc.transform(X)
 
