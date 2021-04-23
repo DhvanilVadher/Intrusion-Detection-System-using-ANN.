@@ -13,7 +13,7 @@ import pickle
 # Part 1 - Data Preprocessing
 
 # Importing the dataset
-dataset = pd.read_csv('./CombinedWEDFRIBenign.csv')
+dataset = pd.read_csv('./CSVs/FINAL/TRAINING.csv')
 for idx,column in enumerate(dataset.columns):
     print(idx,column)
 X = dataset.iloc[:, 0:11].values
@@ -21,14 +21,21 @@ Y = dataset.iloc[:,-1].values
 
 
 # Encoding categorical data
-
+for i in range(0,len(Y)):
+    if Y[i] != "BENIGN":
+        Y[i] = "ATTACK";
+print(Y)
 le = LabelEncoder()
 Y = le.fit_transform(Y)
-for i in range(1,len(Y)):
-    if Y[i] != 0 and Y[i] != 1:
+
+for i in range(0,len(Y)):
+    if Y[i] == 0:
         Y[i] = 1;
+    else:
+        Y[i] = 0;
 
 # Splitting the dataset into the Training set
+print(Y)
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.2, random_state = 0)
 
 # Feature Scaling
@@ -56,7 +63,7 @@ opt = Adam()
 ann.compile(optimizer = opt, loss = 'binary_crossentropy', metrics=['accuracy','mse'])
 
 # Training the ANN on the Training set
-history = ann.fit(X_train, Y_train, batch_size = 32, epochs = 50)
+history = ann.fit(X_train, Y_train, batch_size = 32, epochs = 5)
 weights = ann.get_weights()
 #Graph for mse
 pyplot.plot(history.history['mse'])

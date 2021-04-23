@@ -17,7 +17,7 @@ le = LabelEncoder()
 model = load_model('./SavedModel.h5')
 model.summary()
 #print(model.weights)
-testing_data = pd.read_csv('attack3.csv')
+testing_data = pd.read_csv('./CSVs/FINAL/CombinedWEDFRIBenign.csv')
 #print(testing_data)
 
 required_cols = [0,1,2,3,4,5,6,7,8,9,10]
@@ -26,7 +26,7 @@ Y = testing_data.iloc[:,-1].values
 
 
 for i in range(0,len(Y)):
-        Y[i] = 1;
+        Y[i] = 0;
 print(Y);
 sc = pickle.load(open('./scaler.pkl','rb'));
 X = sc.transform(X)
@@ -36,9 +36,9 @@ print(Y_pred)
 Y_pred = (Y_pred > 0.5)
 
 from sklearn.metrics import confusion_matrix, accuracy_score
-cm = confusion_matrix(Y, Y_pred)
+#cm = confusion_matrix(Y, Y_pred)
 print(X)
 print(Y)
-print(cm)
-print(accuracy_score(Y, Y_pred))
+#print(cm)
+print(accuracy_score(Y, Y_pred.round(),normalize = False))
 

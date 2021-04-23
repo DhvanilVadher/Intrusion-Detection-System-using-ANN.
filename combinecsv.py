@@ -1,9 +1,9 @@
 import glob
 
-interesting_files = glob.glob("./CSVs/combined/*.csv") 
+interesting_files = glob.glob("./CSVs/FINAL/*.csv") 
 print(interesting_files)
 header_saved = False
-with open('generatedCombined.csv','w') as fout:
+with open('./CSVs/FINAL/AttacksDataSet.csv','w') as fout:
     for filename in interesting_files:
         with open(filename) as fin:
             header = next(fin)
